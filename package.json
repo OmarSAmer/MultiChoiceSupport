@@ -1,0 +1,19 @@
+{
+	"name": "MultiChoiceCognitiveOrchestrator",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node app.js"
+	},
+	"dependencies": {
+		"express": "4.13.x",
+		"cfenv": "1.0.x",
+		"watson-developer-cloud": "2.14.4",
+		"body-parser":"1.15.x",
+		"properties-reader":"*"
+	},
+	"repository": {},
+	"engines": {
+		"node": "4.x"
+	} 
+}

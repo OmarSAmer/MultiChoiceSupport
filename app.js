@@ -36,8 +36,8 @@ var app = express();
 var cred = new Buffer("f8ff7e7f-5ddc-4b0a-9db3-3305c439c0e1:xt3zWSAq4fYg").toString("base64");
 
 var conversation = watson.conversation({
-    username: "d229e26e-5d67-4f24-be2c-a78311bd246a",
-    password: "a4iZeLHtmffu",
+    username: "4b9b9fd4-27eb-49fb-b0a3-9d90cb05b087",
+    password: "RznBsSfgbjf1",
     version: "v1",
     version_date: "2016-09-20"
 });
@@ -50,7 +50,7 @@ var appEnv = cfenv.getAppEnv();
 
 app.post("/conversation", function(req, res, next) {
     conversation.message({
-        workspace_id: 'd5938e52-1436-4f03-b5ff-ccba9c1eb085',
+        workspace_id: '3c791cbd-f690-4bc6-a7fb-16d9e870a1fd',
         input: { "text": req.body.text },
         context: req.body.context
     }, function(err, response) {
@@ -58,11 +58,16 @@ app.post("/conversation", function(req, res, next) {
             console.log("error:", err);
         else {
             console.log(response.intents);
-            //	console.log("this error : "+JSON.stringify(response, null, 2));
-            if (response.output.text[0].substring(0, 2) === "A-") {
-                response.output.text[0] = properties.get(response.output.text[0]);
-                res.json(response);
+            console.log("this error : " + JSON.stringify(response, null, 2));
+            if (response.output.text[0] != undefined) {
+                if (response.output.text[0].substring(0, 2) === "A-" || response.output.text[0].substring(0, 2) === "B-" || response.output.text[0].substring(0, 2) === "R-") {
+                    response.output.text[0] = properties.get(response.output.text[0]);
+                    res.json(response);
+                } else {
+                    res.json(response);
+                }
             } else {
+                response.output.text[0] = properties.get("Default");
                 res.json(response);
             }
         }

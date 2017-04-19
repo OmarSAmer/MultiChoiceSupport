@@ -39,7 +39,7 @@ var conversation = watson.conversation({
     username: "4b9b9fd4-27eb-49fb-b0a3-9d90cb05b087",
     password: "RznBsSfgbjf1",
     version: "v1",
-    version_date: "2017-02-03"
+    version_date: "2017-04-21"
 });
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + "/public"));
@@ -49,30 +49,89 @@ app.use(bodyparser.json());
 var appEnv = cfenv.getAppEnv();
 
 app.post("/conversation", function(req, res, next) {
-    conversation.message({
-        workspace_id: '02a0ffcf-68f4-4ffd-a879-90a4f9994802',
-        input: { "text": req.body.text },
-        context: req.body.context
-    }, function(err, response) {
-        if (err)
-            console.log("error:", err);
-        else {
-            console.log(response.intents);
-            console.log("this error : " + JSON.stringify(response, null, 2));
-            if (response.output.text[0] != undefined) {
-                if (response.output.text[0].substring(0, 2) === "A-" || response.output.text[0].substring(0, 2) === "B-" || response.output.text[0].substring(0, 2) === "R-") {
-                    response.output.text[0] = properties.get(response.output.text[0]);
-                    res.json(response);
+    if (req.body.context != undefined) {
+        console.log("start");
+        console.log("back:", req.body.context.back);
+        console.log("t:", req.body.text);
+        console.log("back:", req.body.context.back === true);
+        console.log("t:", req.body.text == "#Back");
+    }
+    if (req.body.context != undefined && req.body.context.back == "true" && req.body.text == "#Back") {
+        var response = req.body.context.prev_response;
+        if (req.body.context.holdback == "true")
+            response = response.context.prev_response;
+        console.log(JSON.stringify(response));
+        response.context.back = false;
+        response.context.holdback = true;
+        response.context.prev_response = null;
+        response.context.prev_response = JSON.parse(JSON.stringify(response));
+        res.json(response);
+
+    } else {
+        conversation.message({
+            workspace_id: '02a0ffcf-68f4-4ffd-a879-90a4f9994802',
+            input: { "text": req.body.text },
+            context: req.body.context
+        }, function(err, response) {
+            if (err)
+                console.log("error:", err);
+            else {
+                console.log(response.intents);
+
+
+                if (response.output.text[0] != undefined) {
+                    if (response.output.text[0].substring(0, 2) === "A-" || response.output.text[0].substring(0, 2) === "B-" || response.output.text[0].substring(0, 2) === "R-") {
+
+
+
+                        response.output.text[0] = properties.get(response.output.text[0]);
+
+                        if (response.context.system.dialog_stack[0].dialog_node == "root") {
+                            if (req.body.context.holdback == "true") {
+                                response.context.holdback = "false";
+                                response.context.back = "true";
+                            } else {
+                                response.context.back = "false"; ////////////////////////////////////
+                                response.context.prev_response = {};
+                            }
+                        } else {
+                            if (req.body.context.holdback == "true")
+                                response.context.back = "true";
+                            else {
+                                response.context.holdback = "true";
+                                response.context.back = "false";
+                            }
+
+                            response.context.prev_response = JSON.parse(JSON.stringify(response));
+                        }
+
+                        res.json(response);
+                        console.log("Code Res : " + JSON.stringify(response, null, 2));
+                    } else {
+                        if (req.body.context && req.body.context.holdback == "true") {
+                            response.context.holdback = "false";
+                            response.context.back = "true";
+                        } else {
+                            response.context.back = "false";
+                            response.context.prev_response = {};
+                        }
+                        res.json(response);
+                    }
                 } else {
+                    if (req.body.context && req.body.context.holdback == "true") {
+                        response.context.holdback = "false";
+                        response.context.back = "true";
+                    } else {
+                        response.context.back = "false";
+                        response.context.prev_response = {};
+                    }
+                    response.output.text[0] = properties.get("Default");
                     res.json(response);
                 }
-            } else {
-                response.output.text[0] = properties.get("Default");
-                res.json(response);
             }
-        }
 
-    });
+        });
+    }
 
 });
 

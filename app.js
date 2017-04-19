@@ -39,7 +39,7 @@ var conversation = watson.conversation({
     username: "4b9b9fd4-27eb-49fb-b0a3-9d90cb05b087",
     password: "RznBsSfgbjf1",
     version: "v1",
-    version_date: "2016-09-20"
+    version_date: "2017-02-03"
 });
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + "/public"));
@@ -50,7 +50,7 @@ var appEnv = cfenv.getAppEnv();
 
 app.post("/conversation", function(req, res, next) {
     conversation.message({
-        workspace_id: '3c791cbd-f690-4bc6-a7fb-16d9e870a1fd',
+        workspace_id: '02a0ffcf-68f4-4ffd-a879-90a4f9994802',
         input: { "text": req.body.text },
         context: req.body.context
     }, function(err, response) {

@@ -61,10 +61,10 @@ app.post("/conversation", function(req, res, next) {
         if (req.body.context.holdback == "true")
             response = response.context.prev_response;
         console.log(JSON.stringify(response));
-        response.context.back = false;
-        response.context.holdback = true;
-        response.context.prev_response = null;
-        response.context.prev_response = JSON.parse(JSON.stringify(response));
+        //response.context.back = false;
+       // response.context.holdback = true;
+      //  response.context.prev_response = null;
+      //  response.context.prev_response = JSON.parse(JSON.stringify(response));
         res.json(response);
 
     } else {

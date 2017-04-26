@@ -6,7 +6,7 @@ var Cpic = "<div class=\"row\"><div class=\"col-xs-2\"><img  data-toggle=\"toolt
 var BackBut = '<button type="button" class="btn btn-default" onclick="BackConv()">><span class="sr-only">Back</span></button>';
 
 function watsontalk(input, back) {
-    if (back)
+    if (back=="true")
         $("#mainchatbody").append("<div class=\"well Watsonchat\">" + Wpic + input + BackBut + "</div></div>");
     else
         $("#mainchatbody").append("<div class=\"well Watsonchat\">" + Wpic + input + "</div></div>");

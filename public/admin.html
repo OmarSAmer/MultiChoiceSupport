@@ -10,16 +10,16 @@
     <link href="https://fonts.googleapis.com/css?family=Lobster|Alegreya" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="s.js"></script>
+    <script src="sa.js"></script>
 </head>
 
 <body>
 
     <div class="well h-1" data-spy="affix" data-offset-top="-1">
-        <p class="center">MultiChoice Support</p>
+        <p class="center">Adminstrator</p>
 
     </div>
-<div id="Feedback" class="modal fade" role="dialog">
+<div id="FBA" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -29,9 +29,35 @@
         <h4 class="modal-title">Feedback</h4>
       </div>
       <div class="modal-body">
-         <p> Why is the answer wrong ?</p>
-           <button type="button" class="btn btn-default"   onclick="FB('W','')">Watson misunderstood the question</button>
-       <button type="button" class="btn btn-default"  onclick="FB('A','')" >The answer is inaccurate</button>
+         <p> This Feedback is that answer is incorrect</p>
+         <p id="FBAP"></p>
+         <p>Modify the Answer:</p>
+         <input type="text" id="FBAA"></p>
+           <button type="button" class="btn btn-default"   onclick="FBS()">Save</button>
+       <button type="button" class="btn btn-default"  onclick="FBN()" >Neglect</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div id="FBW" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Feedback</h4>
+      </div>
+      <div class="modal-body">
+         <p> This Feedback is that Intent of the user was incorrectly identified</p>
+         <p id="FBWP"></p>
+         
+          
+       <button type="button" class="btn btn-default"  onclick="FBN()" >Neglect</button>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
